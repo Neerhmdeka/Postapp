@@ -6,7 +6,13 @@ function App() {
   const [generatedText, setGeneratedText] = useState('');
 
   const generateText = () => {
-    fetch(`http://localhost:8000/generate?text=${encodeURIComponent(inputText)}`)
+    fetch('http://localhost:8000/generate-text', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: inputText })
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -19,6 +25,25 @@ function App() {
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
+  };
+
+  const postToLinkedIn = () => {
+    fetch('http://localhost:8000/publish-post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: generatedText })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log('Text posted to LinkedIn successfully.');
+    })
+    .catch(error => {
+      console.error('There was a problem posting to LinkedIn:', error);
+    });
   };
 
   return (
@@ -48,6 +73,9 @@ function App() {
           value={generatedText}
           style={{ resize: 'none' }}
         />
+        <Button variant="contained" color="primary" onClick={postToLinkedIn}>
+          Post to LinkedIn
+        </Button>
       </div>
     </div>
   );

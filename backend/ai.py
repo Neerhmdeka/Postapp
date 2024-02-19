@@ -1,6 +1,11 @@
+# ai.py
+import os
 import openai
-from api_key import API_KEY  
 
+# Retrieve API key from environment variable
+API_KEY = os.environ.get("OPENAI_API_KEY")
+
+# Set OpenAI API key
 openai.api_key = API_KEY
 
 model_engine = "gpt-3.5-turbo-0125" 
@@ -22,4 +27,4 @@ def generate_text(text):
     
     except Exception as e:
         print(f"Error generating text: {e}")
-        raise  # Re-raise the exception to propagate it to the caller
+        raise  
